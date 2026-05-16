@@ -20,8 +20,8 @@
   --white:  #ffffff;
   --gold:   #f5c842;
   --green:  #22dd66;
-  --fhead: 'Barlow Condensed',sans-serif;
-  --fbody: 'Barlow',sans-serif;
+  --fhead: 'Faster One', sans-serif;
+  --fbody: 'Orbitron', sans-serif;
   --fmono: 'Major Mono Display',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
