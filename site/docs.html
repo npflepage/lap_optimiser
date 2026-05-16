@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX // Documentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;500&family=Major+Mono+Display&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+
+<!-- MathJax for LaTeX equation rendering -->
+<script>
+MathJax = {
+  tex: {
+    inlineMath:  [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    tags: 'ams',
+    packages: {'[+]': ['ams','boldsymbol']},
+  },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+  svg: { fontCache: 'global' },
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+<style>
+/* ── TOKENS (mirrors site palette) ────────────────────────────── */
+:root{
+  --bg:      #0d0d0f;
+  --bg-2:    #141418;
+  --bg-3:    #1a1a20;
+  --panel:   #111115;
+  --border:  #2a2a35;
+  --ink:     #e8e8f0;
+  --dim:     #7a7a9a;
+  --dim2:    #55556a;
+  --red:     #e8001e;
+  --red2:    #ff2040;
+  --blue:    #1565ff;
+  --blue2:   #4488ff;
+  --white:   #ffffff;
+  --gold:    #f5c842;
+
+  --fhead:  'Barlow Condensed', sans-serif;
+  --fbody:  'Barlow', sans-serif;
+  --fmono:  'Major Mono Display', monospace;
+  --fserif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+
+  --content-w: 780px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--fserif);
+  font-size:17px;
+  line-height:1.75;
+}
+
+/* ── HEADER (shared with main site) ───────────────────────────── */
+.site-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;
+  background:var(--bg-2);
+  border-bottom:3px solid var(--red);
+  position:sticky;top:0;z-index:100;
+}
+.head-left{display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-stripes{display:flex;gap:3px;align-items:stretch;height:32px}
+.ls{display:block;width:6px;border-radius:1px}
+.ls.r{background:var(--red)}  .ls.w{background:var(--white)}  .ls.b{background:var(--blue)}
+.logo-words{display:flex;flex-direction:column;line-height:1}
+.logo-apex{font-family:var(--fhead);font-weight:900;font-size:28px;letter-spacing:.12em;color:var(--white)}
+.logo-sub{font-family:var(--fmono);font-size:8px;color:var(--dim);letter-spacing:.28em;margin-top:2px}
+.version-pill{font-family:var(--fmono);font-size:10px;color:var(--dim2);border:1px solid var(--border);padding:3px 8px;border-radius:3px}
+.head-nav{display:flex;gap:4px}
+.nav-link{
+  font-family:var(--fhead);font-weight:700;font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  color:var(--dim);padding:8px 14px;border-radius:2px;
+  transition:all .15s;
+}
+.nav-link:hover{color:var(--white);background:rgba(255,255,255,.06)}
+.nav-link.active{color:var(--white);border-bottom:2px solid var(--red)}
+
+/* ── PAGE LAYOUT ───────────────────────────────────────────────── */
+.doc-layout{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  max-width:1100px;
+  margin:0 auto;
+  padding:40px 24px 80px;
+  gap:48px;
+  align-items:start;
+}
+
+/* ── SIDEBAR TOC ───────────────────────────────────────────────── */
+.toc{
+  position:sticky;top:72px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:20px 16px;
+}
+.toc::before{
+  content:'';display:block;height:3px;background:var(--red);
+  border-radius:3px 3px 0 0;
+  margin:-20px -16px 16px;
+}
+.toc-title{
+  font-family:var(--fhead);font-weight:700;font-size:10px;
+  letter-spacing:.28em;color:var(--red);text-transform:uppercase;
+  margin-bottom:14px;
+}
+.toc-list{list-style:none;padding:0}
+.toc-list li{border-bottom:1px solid var(--border);padding:0}
+.toc-list a{
+  display:block;padding:8px 4px;
+  font-family:var(--fbody);font-size:13px;color:var(--dim);
+  text-decoration:none;letter-spacing:.02em;
+  transition:color .12s;
+}
+.toc-list a:hover{color:var(--white)}
+.toc-list a.active{color:var(--red)}
+.toc-num{font-family:var(--fmono);font-size:10px;margin-right:6px;color:var(--dim2)}
+
+/* ── MAIN CONTENT ──────────────────────────────────────────────── */
+.doc-content{min-width:0}
+
+/* Section titles */
+.doc-section{margin-bottom:52px;scroll-margin-top:72px}
+.sec-label{
+  font-family:var(--fmono);font-size:10px;color:var(--red);
+  letter-spacing:.3em;text-transform:uppercase;margin-bottom:8px;
+}
+h2.sec-title{
+  font-family:var(--fhead);font-weight:900;font-size:34px;
+  letter-spacing:.06em;color:var(--white);
+  border-bottom:2px solid var(--border);
+  padding-bottom:10px;margin-bottom:20px;line-height:1.1;
+}
+h3.sub-title{
+  font-family:var(--fhead);font-weight:700;font-size:20px;
+  letter-spacing:.08em;color:var(--white);
+  margin:28px 0 10px;
+}
+
+/* Body text — serif for readability */
+.doc-content p{
+  font-family:var(--fserif);
+  font-size:16.5px;line-height:1.78;
+  color:#d0d0e0;
+  margin-bottom:16px;
+  max-width:68ch;
+}
+
+/* Equation blocks */
+.eq-block{
+  background:var(--bg-3);
+  border-left:3px solid var(--red);
+  border-radius:0 3px 3px 0;
+  padding:16px 20px;
+  margin:20px 0;
+  overflow-x:auto;
+  text-align:center;
+}
+.eq-block mjx-container{font-size:1.05em !important}
+
+/* Inline math colour */
+mjx-container[display="false"]{color:#c8c8e0}
+
+/* Bullet lists */
+.doc-content ul{
+  font-family:var(--fserif);
+  font-size:16px;line-height:1.7;
+  color:#c0c0d8;
+  padding-left:0;
+  list-style:none;
+  margin-bottom:16px;
+}
+.doc-content ul li{
+  padding:4px 0 4px 22px;
+  position:relative;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.doc-content ul li::before{
+  content:'';
+  position:absolute;left:0;top:14px;
+  width:8px;height:2px;background:var(--red);border-radius:1px;
+}
+
+/* Tables */
+.doc-table-wrap{overflow-x:auto;margin:20px 0}
+table.doc-table{
+  width:100%;border-collapse:collapse;
+  font-family:var(--fbody);font-size:14px;
+}
+table.doc-table th{
+  background:var(--bg-3);
+  font-family:var(--fhead);font-weight:700;font-size:12px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--red);
+  padding:10px 14px;text-align:left;border-bottom:2px solid var(--red);
+}
+table.doc-table td{
+  padding:9px 14px;border-bottom:1px solid var(--border);
+  color:var(--ink);
+}
+table.doc-table tr:last-child td{border-bottom:none}
+table.doc-table td:first-child{color:var(--dim);font-family:var(--fmono);font-size:13px}
+table.doc-table .good{color:#22dd66;font-weight:600}
+
+/* Code blocks */
+pre.doc-code{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-left:3px solid var(--blue);
+  border-radius:0 3px 3px 0;
+  padding:16px 20px;
+  overflow-x:auto;
+  margin:20px 0;
+  font-family:var(--fmono);font-size:13px;
+  color:#c8e0ff;line-height:1.6;
+}
+code{font-family:var(--fmono);font-size:13px;color:#88aaff;
+     background:rgba(68,136,255,.1);padding:1px 5px;border-radius:2px}
+pre code{background:none;padding:0;color:inherit}
+
+/* Info callout */
+.callout{
+  background:var(--bg-3);
+  border:1px solid var(--border);
+  border-left:4px solid var(--blue2);
+  border-radius:0 3px 3px 0;
+  padding:14px 18px;
+  margin:20px 0;
+  font-family:var(--fbody);font-size:14px;color:var(--dim);
+}
+.callout strong{color:var(--blue2);font-family:var(--fhead);letter-spacing:.1em}
+
+/* ── FOOTER ────────────────────────────────────────────────────── */
+.site-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 20px;height:36px;
+  background:var(--bg-2);border-top:1px solid var(--border);
+}
+.foot-stripe-group{display:flex;gap:3px;align-items:stretch;height:20px}
+.fs{display:block;width:18px;border-radius:1px}
+.fs.r{background:var(--red)} .fs.w{background:var(--white)} .fs.b{background:var(--blue)}
+.foot-copy{font-family:var(--fmono);font-size:8px;color:var(--dim2);letter-spacing:.22em}
+
+/* ── RESPONSIVE ────────────────────────────────────────────────── */
+@media(max-width:800px){
+  .doc-layout{grid-template-columns:1fr;padding:24px 16px 60px}
+  .toc{position:static}
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────── -->
+<header class="site-head">
+  <div class="head-left">
+    <div class="logo">
+      <div class="logo-stripes">
+        <span class="ls r"></span><span class="ls w"></span><span class="ls b"></span>
+      </div>
+      <div class="logo-words">
+        <span class="logo-apex">APEX</span>
+        <span class="logo-sub">FOURIER RACING LINE LAB</span>
+      </div>
+    </div>
+    <div class="version-pill">v2.0</div>
+  </div>
+  <nav class="head-nav">
+    <a href="index.html" class="nav-link">VIEWER</a>
+    <a href="docs.html"  class="nav-link active">DOCS</a>
+  </nav>
+</header>
+
+<!-- ── BODY ───────────────────────────────────────────────────────── -->
+<div class="doc-layout">
+
+  <!-- SIDEBAR TOC -->
+  <aside class="toc">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#intro"><span class="toc-num">1</span>Introduction</a></li>
+      <li><a href="#fourier"><span class="toc-num">2</span>Fourier Track Model</a></li>
+      <li><a href="#frenet"><span class="toc-num">3</span>Frenet-Serret Frame</a></li>
+      <li><a href="#racingline"><span class="toc-num">4</span>Racing Line</a></li>
+      <li><a href="#kinematics"><span class="toc-num">5</span>Speed &amp; Kinematics</a></li>
+      <li><a href="#physics"><span class="toc-num">6</span>Vehicle Physics</a></li>
+      <li><a href="#optim"><span class="toc-num">7</span>Optimisation</a></li>
+      <li><a href="#impl"><span class="toc-num">8</span>Implementation</a></li>
+      <li><a href="#results"><span class="toc-num">9</span>Results</a></li>
+    </ul>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <article class="doc-content">
+
+    <!-- 1 INTRO -->
+    <section class="doc-section" id="intro">
+      <div class="sec-label">Section 01</div>
+      <h2 class="sec-title">Introduction</h2>
+      <p>
+        This project implements a complete physics-constrained minimum-lap-time optimiser
+        for a Formula&nbsp;1-style vehicle on real-world circuits (Silverstone, Monza, Spa, and 22 others).
+      </p>
+      <p>
+        The framework simultaneously optimises the <em>racing line</em> (lateral offset from the
+        centerline) and the <em>speed profile</em>, while enforcing track-boundary limits and a
+        realistic tyre friction ellipse derived from aerodynamic downforce, engine power, and
+        mechanical grip.
+      </p>
+      <p>
+        All components are differentiable end-to-end via <strong>JAX</strong>, enabling exact
+        gradient-based optimisation with L-BFGS through a progressive penalty strategy.
+      </p>
+    </section>
+
+    <!-- 2 FOURIER -->
+    <section class="doc-section" id="fourier">
+      <div class="sec-label">Section 02</div>
+      <h2 class="sec-title">Fourier Track Modelling</h2>
+
+      <h3 class="sub-title">Why Fourier Series?</h3>
+      <p>Fourier series are well-suited for closed-loop circuits because they are:</p>
+      <ul>
+        <li>Globally smooth and infinitely differentiable</li>
+        <li>Periodic by construction — perfect loop closure with zero extra constraints</li>
+        <li>Spectrally convergent — high accuracy with relatively few coefficients</li>
+        <li>Analytically differentiable to any order via closed-form derivative matrices</li>
+        <li>Naturally suppress high-frequency noise present in raw GPS data</li>
+      </ul>
+      <p>
+        Compared to piecewise splines or dense pointwise optimisation, spectral parametrisation
+        reduces the number of optimisation variables by a factor of 5–20 while guaranteeing $C^\infty$ smoothness.
+      </p>
+
+      <h3 class="sub-title">Fourier Representation</h3>
+      <p>A scalar periodic function on $[0,2\pi]$ is approximated as:</p>
+      <div class="eq-block">
+        $$f(t) = c_0 + \sum_{k=1}^{N} \bigl( c_{2k-1}\cos(kt) + c_{2k}\sin(kt) \bigr)$$
+      </div>
+      <p>In matrix form, $f(\mathbf{t}) = \mathbf{A}(\mathbf{t})\,\mathbf{c}$, where $\mathbf{A}$ is the design matrix of size $(M \times 2N+1)$ evaluated at $M$ collocation points.</p>
+      <p>Derivative matrices of order $n$ follow directly from trigonometric identities. For order 1:</p>
+      <div class="eq-block">
+        $$\mathbf{D}^{(1)}_{k} : \quad \cos(kt) \;\to\; -k\sin(kt), \quad \sin(kt) \;\to\; k\cos(kt)$$
+      </div>
+      <p>
+        The same Fourier basis is applied to: centerline coordinates $x_c(t),\,y_c(t)$;
+        track half-widths $w_R(t),\,w_L(t)$; lateral offset $d(t)$; and speed profile $v(t)$.
+        The resolution schedule $N \in \{1, 2, 4, 8, 16, 32, 48, 64, 96, 128, 192\}$ provides
+        a natural multigrid warm-start strategy.
+      </p>
+    </section>
+
+    <!-- 3 FRENET -->
+    <section class="doc-section" id="frenet">
+      <div class="sec-label">Section 03</div>
+      <h2 class="sec-title">Frenet-Serret Frame</h2>
+      <p>
+        The raw centerline is fitted after arc-length reparametrisation:
+      </p>
+      <div class="eq-block">
+        $$t = 2\pi\frac{s}{L}, \qquad s = \text{cumulative arc length}$$
+      </div>
+      <p>The Frenet frame is then computed analytically from the Fourier derivatives:</p>
+      <div class="eq-block">
+        $$g_c = \left\|\dot{\mathbf{r}}_c\right\| = \sqrt{\dot{x}_c^2 + \dot{y}_c^2}$$
+      </div>
+      <div class="eq-block">
+        $$\mathbf{T} = \frac{1}{g_c}\!\begin{pmatrix}\dot{x}_c\\\dot{y}_c\end{pmatrix}, \qquad
+          \mathbf{N} = \begin{pmatrix}-T_y\\T_x\end{pmatrix}$$
+      </div>
+      <div class="eq-block">
+        $$\kappa_c = \frac{\dot{x}_c\,\ddot{y}_c - \dot{y}_c\,\ddot{x}_c}{g_c^3}$$
+      </div>
+      <p>
+        Higher-order derivatives $\dot{\mathbf{N}}$, $\ddot{\mathbf{N}}$ are also computed analytically and
+        precomputed as constant arrays. These are required for the product-rule expansion of racing-path
+        curvature.
+      </p>
+    </section>
+
+    <!-- 4 RACING LINE -->
+    <section class="doc-section" id="racingline">
+      <div class="sec-label">Section 04</div>
+      <h2 class="sec-title">Racing Line Parametrisation</h2>
+      <p>The racing line is expressed as a lateral deviation from the centerline in the Frenet normal direction:</p>
+      <div class="eq-block">
+        $$\mathbf{r}(t) = \mathbf{r}_c(t) + d(t)\,\mathbf{N}(t)$$
+      </div>
+      <p>with $d(t) = \mathbf{A}_d(t)\,\mathbf{c}_d$ being the Fourier-parametrised lateral offset. This turns track boundaries into simple scalar inequalities on $d$:</p>
+      <div class="eq-block">
+        $$-w_L(t) \leq d(t) \leq w_R(t)$$
+      </div>
+      <p>
+        First and second derivatives of the racing path are expanded via the product rule. For the first derivative:
+      </p>
+      <div class="eq-block">
+        $$\dot{x}_r = \dot{x}_c + \dot{d}\,N_x + d\,\dot{N}_x, \qquad \dot{y}_r = \dot{y}_c + \dot{d}\,N_y + d\,\dot{N}_y$$
+      </div>
+      <p>And the second derivative:</p>
+      <div class="eq-block">
+        $$\ddot{x}_r = \ddot{x}_c + \ddot{d}\,N_x + 2\dot{d}\,\dot{N}_x + d\,\ddot{N}_x$$
+      </div>
+      <p>The curvature of the racing path is then:</p>
+      <div class="eq-block">
+        $$\kappa_r = \frac{\dot{x}_r\,\ddot{y}_r - \dot{y}_r\,\ddot{x}_r}{g_r^3}, \qquad g_r = \sqrt{\dot{x}_r^2+\dot{y}_r^2}$$
+      </div>
+    </section>
+
+    <!-- 5 KINEMATICS -->
+    <section class="doc-section" id="kinematics">
+      <div class="sec-label">Section 05</div>
+      <h2 class="sec-title">Speed Profile &amp; Kinematics</h2>
+      <p>
+        The parameter $t \in [0, 2\pi]$ is a spectral coordinate, not physical time. The speed
+        $v(t) = \mathbf{A}_v(t)\,\mathbf{c}_v$ is optimised directly in this space.
+      </p>
+      <p>
+        The infinitesimal physical time element is:
+      </p>
+      <div class="eq-block">
+        $$d\tau = \frac{g_r(t)}{v(t)}\,dt$$
+      </div>
+      <p>Hence the total lap time — the objective to minimise — is:</p>
+      <div class="eq-block">
+        $$T_\text{lap} = \int_0^{2\pi} \frac{g_r(t)}{v(t)}\,dt \;\approx\; \sum_{i=1}^{M} \frac{g_r(t_i)}{v(t_i)}\,\Delta t$$
+      </div>
+      <p>Longitudinal and lateral accelerations in physical time follow from the chain rule:</p>
+      <div class="eq-block">
+        $$a_\text{lon} = \frac{dv}{d\tau} = \frac{v}{g_r}\frac{dv}{dt}, \qquad a_\text{lat} = v^2\kappa_r$$
+      </div>
+    </section>
+
+    <!-- 6 PHYSICS -->
+    <section class="doc-section" id="physics">
+      <div class="sec-label">Section 06</div>
+      <h2 class="sec-title">Vehicle Physics Model</h2>
+      <p>
+        The model is calibrated to a $750\,\text{kg}$, $\approx\!1000\,\text{hp}$ Formula&nbsp;1 car.
+        All limits grow with speed due to aerodynamic downforce terms $C_{d,f}v^2$ and $C_{d,b}v^2$.
+      </p>
+
+      <h3 class="sub-title">Longitudinal Limits</h3>
+      <p>Forward (power-limited at high speed, grip-limited at low speed):</p>
+      <div class="eq-block">
+        $$a_\text{front}(v) = \frac{1}{m}\min\!\left(F_{g,f} + C_{d,f}v^2,\;\frac{P}{v}\right) - \frac{Dv^2}{m}$$
+      </div>
+      <p>Braking (rear-biased aerodynamics):</p>
+      <div class="eq-block">
+        $$a_\text{brake}(v) = \frac{F_{g,b} + C_{d,b}v^2 + Dv^2}{m}$$
+      </div>
+
+      <h3 class="sub-title">Lateral Limit</h3>
+      <div class="eq-block">
+        $$a_\text{side}(v) = 1.2 \times \frac{F_{g,b} + C_{d,b}v^2}{m}$$
+      </div>
+
+      <h3 class="sub-title">Combined Grip — Friction Ellipse</h3>
+      <div class="eq-block">
+        $$\left(\frac{a_\text{lon}}{a_\text{lon,max}(v)}\right)^{\!2} + \left(\frac{a_\text{lat}}{a_\text{side}(v)}\right)^{\!2} \leq 1$$
+      </div>
+      <p>
+        The right-hand side limit $a_\text{lon,max}$ is $a_\text{front}$ when accelerating and
+        $a_\text{brake}$ when decelerating, chosen via a differentiable $\text{where}$ conditional in JAX.
+      </p>
+
+      <h3 class="sub-title">Benchmark Validation</h3>
+      <div class="doc-table-wrap">
+        <table class="doc-table">
+          <thead>
+            <tr><th>Metric</th><th>Model</th><th>Real F1</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0 → 100 km/h</td><td class="good">2.50 s</td><td>~2.6 s</td></tr>
+            <tr><td>0 → 200 km/h</td><td class="good">4.52 s</td><td>~4.5 s</td></tr>
+            <tr><td>0 → 300 km/h</td><td class="good">7.67 s</td><td>~8 s</td></tr>
+            <tr><td>Top speed</td><td class="good">360 km/h</td><td>340–360 km/h</td></tr>
+            <tr><td>Peak braking</td><td class="good">5.2 g @ 340 km/h</td><td>5–6 g</td></tr>
+            <tr><td>Peak lateral</td><td class="good">5.15 g @ 340 km/h</td><td>5–6 g</td></tr>
+            <tr><td>Low-speed lateral</td><td class="good">1.84 g</td><td>1.5–2 g</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7 OPTIMISATION -->
+    <section class="doc-section" id="optim">
+      <div class="sec-label">Section 07</div>
+      <h2 class="sec-title">Optimisation Strategy</h2>
+
+      <h3 class="sub-title">Problem Formulation</h3>
+      <p>The decision variables are the Fourier coefficients for the lateral offset and speed:</p>
+      <div class="eq-block">
+        $$\mathbf{p} = \begin{bmatrix}\mathbf{c}_d \\ \mathbf{c}_v\end{bmatrix} \in \mathbb{R}^{2(2N+1)}$$
+      </div>
+      <p>The full constrained problem is:</p>
+      <div class="eq-block">
+        $$\min_{\mathbf{p}}\; T_\text{lap}(\mathbf{p}) \quad \text{s.t.} \quad
+          \begin{cases}
+            \left(\frac{a_\text{lon}}{a_\text{lon,max}}\right)^2 + \left(\frac{a_\text{lat}}{a_\text{side}}\right)^2 \leq 1 \\
+            -w_L(t) \leq d(t) \leq w_R(t) \\
+            v(t) \geq v_\text{min}
+          \end{cases}$$
+      </div>
+
+      <h3 class="sub-title">Progressive Penalty Method</h3>
+      <p>
+        Since <code>jaxopt.ScipyMinimize</code> is unconstrained-only, nonlinear inequality
+        constraints are handled via a quadratic penalty:
+      </p>
+      <div class="eq-block">
+        $$\mathcal{L}(\mathbf{p},\mu) = T_\text{lap}(\mathbf{p}) + \mu \sum_i \Bigl[\text{ReLU}\bigl(c_i(\mathbf{p})\bigr)\Bigr]^2$$
+      </div>
+      <p>
+        A progressive schedule $\mu = 10^0, 10^1, \dots, 10^8$ is used. Each stage warm-starts
+        from the previous solution. Final constraint violation routinely reaches $< 10^{-8}$
+        — effectively machine precision for the physics model.
+      </p>
+      <div class="callout">
+        <strong>WHY NOT SLSQP?</strong>&nbsp; 
+        jaxopt provides no general nonlinear-constraint solver.
+        ProjectedGradient requires a closed-form projection (unavailable for the speed-dependent
+        friction ellipse); OSQP is QP-only. The penalty method with L-BFGS and JAX autodiff
+        is the correct choice.
+      </div>
+
+      <h3 class="sub-title">Multigrid Warm-Start</h3>
+      <p>
+        The resolution schedule $N \in \{1,2,4,8,\dots,192\}$ forms a multigrid
+        continuation strategy. Coefficients are zero-padded when moving to the next level:
+      </p>
+      <div class="eq-block">
+        $$\mathbf{c}_{N_\text{new}} = \begin{bmatrix}\mathbf{c}_{N_\text{prev}} \\ \mathbf{0}\end{bmatrix}$$
+      </div>
+      <p>
+        Coarse levels find the global basin; fine levels add geometric detail. This avoids
+        poor local minima that pure high-resolution optimisation would encounter.
+      </p>
+
+      <h3 class="sub-title">JAX Implementation</h3>
+<pre class="doc-code"><span style="color:#aaa"># All inner functions are JIT-compiled</span>
+@jit
+def forward(p):          <span style="color:#aaa"># → (d, v, g_r, κ, a_lon, a_lat)</span>
+    ...
+
+@jit
+def lap_time_fn(p):      <span style="color:#aaa"># objective</span>
+    return jnp.sum(g_r / jnp.maximum(v_r, 1e-3)) * dt
+
+@jit
+def cviol_fn(p):         <span style="color:#aaa"># squared constraint violation</span>
+    return jnp.sum(relu(ellipse)**2 + relu(track)**2 + ...) * dt
+
+<span style="color:#aaa"># Exact gradient via autodiff — no finite differences</span>
+vag = jit(value_and_grad(lambda p: lap_time_fn(p) + mu * cviol_fn(p)))
+
+solver = ScipyMinimize(method='L-BFGS-B', fun=vag, value_and_grad=True)
+p = solver.run(p).params</pre>
+    </section>
+
+    <!-- 8 IMPLEMENTATION -->
+    <section class="doc-section" id="impl">
+      <div class="sec-label">Section 08</div>
+      <h2 class="sec-title">Implementation</h2>
+      <ul>
+        <li>Track fitting (arc-length reparametrisation, Fourier lstsq) runs once in NumPy — cheap</li>
+        <li>All optimisation maths runs in JAX with <code>float64</code> precision (<code>jax_enable_x64=True</code>)</li>
+        <li>Fourier design and derivative matrices are precomputed constant arrays pushed to device once</li>
+        <li>JIT compilation traces on first call; all subsequent optimisation iterations run at full speed</li>
+        <li>Adaptive Fourier order per track: $N_\text{FIT} = \min(192,\, \max(32,\, N_\text{pts}/3))$ — ensures numerical stability of the least-squares fit</li>
+        <li>Per-track JSON output (~230 KB each) stores 600 decimated points per resolution level</li>
+        <li>26 circuits processed automatically from CSV; the web viewer loads data lazily on demand</li>
+      </ul>
+    </section>
+
+    <!-- 9 RESULTS -->
+    <section class="doc-section" id="results">
+      <div class="sec-label">Section 09</div>
+      <h2 class="sec-title">Results</h2>
+      <p>
+        On Silverstone the optimiser converges from 238&nbsp;s (N=1, constant speed on the centerline)
+        down to approximately 109&nbsp;s at N=192 — compared to Hamilton's 2020 pole of 87.1&nbsp;s.
+        The ~22&nbsp;s gap is explained by:
+      </p>
+      <ul>
+        <li>Quasi-static physics (no transient tyre load, no suspension)</li>
+        <li>Conservative friction constraint satisfaction — penalty method is softer than hard SLSQP constraints</li>
+        <li>No slipstream, DRS, or multi-lap energy management</li>
+        <li>The spectral parametrisation smooths aggressive late-apex geometry</li>
+      </ul>
+      <p>The speed profile correctly shows low speed in slow corners and peak speeds (~310 km/h) on the Hanger Straight and Maggotts–Becketts complex. Lateral G reaches ~4.5&nbsp;g in fast corners — physically plausible for a 2020-spec car.</p>
+      <p>Future extensions can include tyre load sensitivity, suspension dynamics, energy management (hybrid systems), and multi-lap stint optimisation.</p>
+    </section>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="foot-stripe-group"><span class="fs r"></span><span class="fs w"></span><span class="fs b"></span></div>
+  <span class="foot-copy">FOURIER PARAMETRISED RACING LINE &nbsp;·&nbsp; MIN LAP TIME &nbsp;·&nbsp; PHYSICS CONSTRAINED</span>
+  <div class="foot-stripe-group"><span class="fs b"></span><span class="fs w"></span><span class="fs r"></span></div>
+</footer>
+
+<!-- Active TOC highlight on scroll -->
+<script>
+const sections = document.querySelectorAll('.doc-section');
+const links    = document.querySelectorAll('.toc-list a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-list a[href="#${e.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

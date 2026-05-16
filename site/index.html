@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX // Fourier Racing Line Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Barlow:wght@300;400;500;600&family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="head-left">
+    <div class="logo">
+      <div class="logo-stripes">
+        <span class="ls r"></span><span class="ls w"></span><span class="ls b"></span>
+      </div>
+      <div class="logo-words">
+        <span class="logo-apex">APEX</span>
+        <span class="logo-sub">FOURIER RACING LINE LAB</span>
+      </div>
+    </div>
+    <div class="version-pill">v2.0</div>
+  </div>
+  <div class="head-center">DRIVE FAST.&nbsp;&nbsp;ANALYSE FASTER.</div>
+  <nav class="head-nav">
+    <a href="index.html" class="nav-link active">VIEWER</a>
+    <a href="docs.html"  class="nav-link">DOCS</a>
+  </nav>
+  <div class="head-right">
+    <label class="track-pick">
+      <span class="pick-label">CIRCUIT</span>
+      <div class="select-wrap">
+        <select id="trackSelect"></select>
+        <span class="sel-arrow">▾</span>
+      </div>
+    </label>
+  </div>
+</header>
+
+<main class="dash">
+
+  <!-- LEFT RAIL -->
+  <aside class="rail rail-left">
+
+    <div class="panel timing-panel">
+      <div class="panel-label">LAP TIME</div>
+      <div class="big-time" id="lapTime">--.---</div>
+      <div class="time-unit">SECONDS</div>
+      <div class="record-row">
+        <span class="rec-label">F1 RECORD</span>
+        <span class="rec-val" id="f1Record">—</span>
+      </div>
+      <div class="record-row">
+        <span class="rec-label">DELTA</span>
+        <span class="rec-val" id="deltaRecord">—</span>
+      </div>
+      <div class="record-bar"><div class="record-fill" id="recordFill"></div></div>
+    </div>
+
+    <div class="panel tele-panel">
+      <div class="panel-label">TELEMETRY</div>
+      <div class="tele-row">
+        <span class="tele-k">CURRENT SPEED</span>
+        <div class="tele-right">
+          <span class="tele-v" id="curSpeed">0</span>
+          <span class="tele-u">km/h</span>
+        </div>
+      </div>
+      <div class="tele-row">
+        <span class="tele-k">LONG G</span>
+        <div class="tele-right">
+          <span class="tele-v" id="curLonG">0.00</span>
+          <span class="tele-u">g</span>
+        </div>
+      </div>
+      <div class="tele-row">
+        <span class="tele-k">LAT G</span>
+        <div class="tele-right">
+          <span class="tele-v" id="curLatG">0.00</span>
+          <span class="tele-u">g</span>
+        </div>
+      </div>
+      <div class="tele-row last">
+        <span class="tele-k">ACCEL NORM</span>
+        <div class="tele-right">
+          <span class="tele-v" id="curAmag">0.0</span>
+          <span class="tele-u">m/s²</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel ggpanel">
+      <div class="panel-label">LATERAL / LONGITUDINAL</div>
+      <canvas id="ggCanvas" width="280" height="280"></canvas>
+      <div class="gg-legend">
+        <span class="dot lat-dot"></span><span>LAT (ay)</span>
+        <span class="dot lon-dot"></span><span>LONG (ax)</span>
+      </div>
+      <div class="gg-sub">FRENET REFERENCE FRAME</div>
+    </div>
+
+  </aside>
+
+  <!-- CENTRE STAGE -->
+  <section class="stage">
+    <div class="stage-head">
+      <h1 id="trackTitle">—</h1>
+      <div class="stage-meta">
+        <span id="trackLen">—</span>
+        &nbsp;·&nbsp; RES <b id="resBadge">N=—</b>
+        &nbsp;·&nbsp; LAP&nbsp;<span id="lapBadgeTime">—</span>&nbsp;s
+      </div>
+    </div>
+
+    <div class="track-frame" id="trackFrame">
+      <canvas id="trackCanvas"></canvas>
+      <div class="zoom-hint" id="zoomHint">SCROLL TO ZOOM &nbsp;·&nbsp; DRAG TO PAN</div>
+      <div class="speed-key">
+        <span>SLOW</span>
+        <div class="key-grad"></div>
+        <span>FAST</span>
+      </div>
+    </div>
+
+    <div class="transport">
+      <button id="btnFirst" title="Go to start">⏮</button>
+      <button id="btnPrev"  title="Frame −">◀|</button>
+      <button id="btnPlay" class="play" title="Play / Pause">▶</button>
+      <button id="btnNext"  title="Frame +">|▶</button>
+      <button id="btnLast"  title="Go to end">⏭</button>
+      <div class="prog-wrap">
+        <input type="range" id="progress" min="0" max="599" value="0">
+      </div>
+      <button id="btnZoomReset" class="zoom-btn" title="Reset zoom (or double-click map)">⊕ ZOOM</button>
+      <div class="lap-counter">
+        <span id="frameIx">0</span>/<span id="frameTot">599</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT RAIL -->
+  <aside class="rail rail-right">
+
+    <div class="panel res-panel">
+      <div class="panel-label">RESOLUTION // FOURIER MODES</div>
+      <div class="res-readout" id="resValue">N = —</div>
+      <input type="range" id="resSlider" min="0" max="0" value="0">
+      <div class="res-ticks" id="resTicks"></div>
+      <div class="res-lap">LAP @ THIS RES: <b id="resLap">—</b></div>
+    </div>
+
+    <div class="panel settings-panel">
+      <div class="panel-label">SIMULATION SETTINGS</div>
+      <div class="sett-row"><span class="sett-k">VEHICLE MASS</span><span class="sett-v">750 kg</span></div>
+      <div class="sett-row"><span class="sett-k">MAX POWER</span><span class="sett-v">745 kW</span></div>
+      <div class="sett-row"><span class="sett-k">MAX LAT ACCEL</span><span class="sett-v">~5.0 g</span></div>
+      <div class="sett-row"><span class="sett-k">MAX BRAKE</span><span class="sett-v">~3.5 g</span></div>
+      <div class="sett-row"><span class="sett-k">DRAG COEFF</span><span class="sett-v">0.745 Ns²/m²</span></div>
+      <div class="sett-row"><span class="sett-k">SOLVER</span><span class="sett-v">JAX L-BFGS</span></div>
+      <div class="sett-row"><span class="sett-k">PENALTY</span><span class="sett-v">1e0 → 1e8</span></div>
+    </div>
+
+  </aside>
+</main>
+
+<!-- FULL-WIDTH TRACE -->
+<section class="trace-section">
+  <div class="trace-bar">
+    <span class="panel-label">SPEED &amp; ACCELERATION PLOTS</span>
+    <div class="trace-legend">
+      <span class="tleg speed">— SPEED (km/h)</span>
+      <span class="tleg lon">— LONG ACC (ax)</span>
+      <span class="tleg lat">— LAT ACC (ay)</span>
+    </div>
+    <div class="trace-toggle">
+      <button id="tgSpeed" class="active">SPEED</button>
+      <button id="tgAccel">|ACCEL|</button>
+      <button id="tgBoth">BOTH</button>
+    </div>
+  </div>
+  <div class="trace-wrap">
+    <canvas id="traceCanvas"></canvas>
+  </div>
+  <div class="trace-xlabel">DISTANCE ALONG TRACK (m)</div>
+</section>
+
+<footer class="site-foot">
+  <div class="foot-stripe-group">
+    <span class="fs r"></span><span class="fs w"></span><span class="fs b"></span>
+  </div>
+  <span class="foot-copy">FOURIER PARAMETRISED RACING LINE &nbsp;·&nbsp; MIN LAP TIME &nbsp;·&nbsp; PHYSICS CONSTRAINED</span>
+  <div class="foot-stripe-group">
+    <span class="fs b"></span><span class="fs w"></span><span class="fs r"></span>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

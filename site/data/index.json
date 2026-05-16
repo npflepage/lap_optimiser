@@ -1,0 +1,154 @@
+{
+  "tracks": [
+    {
+      "name": "Austin",
+      "f1_record": 96.169,
+      "best_lap": 100.0524,
+      "track_length": 5511.8
+    },
+    {
+      "name": "BrandsHatch",
+      "f1_record": null,
+      "best_lap": 62.5794,
+      "track_length": 3907.7
+    },
+    {
+      "name": "Budapest",
+      "f1_record": 78.739,
+      "best_lap": 82.4368,
+      "track_length": 4380.6
+    },
+    {
+      "name": "Catalunya",
+      "f1_record": 78.149,
+      "best_lap": 83.6352,
+      "track_length": 4653.6
+    },
+    {
+      "name": "Hockenheim",
+      "f1_record": 73.78,
+      "best_lap": 78.0035,
+      "track_length": 4572.9
+    },
+    {
+      "name": "IMS",
+      "f1_record": null,
+      "best_lap": 0.0339,
+      "track_length": 4025.2
+    },
+    {
+      "name": "Melbourne",
+      "f1_record": 80.235,
+      "best_lap": 91.7534,
+      "track_length": 5302.6
+    },
+    {
+      "name": "MexicoCity",
+      "f1_record": 77.774,
+      "best_lap": 81.5606,
+      "track_length": 4301.0
+    },
+    {
+      "name": "Montreal",
+      "f1_record": 73.078,
+      "best_lap": 75.9837,
+      "track_length": 4361.2
+    },
+    {
+      "name": "Monza",
+      "f1_record": 80.329,
+      "best_lap": 83.1657,
+      "track_length": 5794.3
+    },
+    {
+      "name": "MoscowRaceway",
+      "f1_record": null,
+      "best_lap": 85.0613,
+      "track_length": 4067.1
+    },
+    {
+      "name": "Norisring",
+      "f1_record": null,
+      "best_lap": 41.6335,
+      "track_length": 2298.1
+    },
+    {
+      "name": "Nuerburgring",
+      "f1_record": 89.212,
+      "best_lap": 89.9009,
+      "track_length": 5148.2
+    },
+    {
+      "name": "Oschersleben",
+      "f1_record": null,
+      "best_lap": 66.4228,
+      "track_length": 3695.5
+    },
+    {
+      "name": "Sakhir",
+      "f1_record": 91.447,
+      "best_lap": 93.4077,
+      "track_length": 5409.7
+    },
+    {
+      "name": "SaoPaulo",
+      "f1_record": 71.011,
+      "best_lap": 72.9332,
+      "track_length": 4308.2
+    },
+    {
+      "name": "Sepang",
+      "f1_record": 94.08,
+      "best_lap": 96.6942,
+      "track_length": 5541.3
+    },
+    {
+      "name": "Shanghai",
+      "f1_record": 92.238,
+      "best_lap": 98.6642,
+      "track_length": 5448.7
+    },
+    {
+      "name": "Silverstone",
+      "f1_record": 87.097,
+      "best_lap": 90.6263,
+      "track_length": 5891.1
+    },
+    {
+      "name": "Sochi",
+      "f1_record": 95.761,
+      "best_lap": 101.5743,
+      "track_length": 5844.9
+    },
+    {
+      "name": "Spa",
+      "f1_record": 103.003,
+      "best_lap": 105.6796,
+      "track_length": 7004.4
+    },
+    {
+      "name": "Spielberg",
+      "f1_record": 65.619,
+      "best_lap": 69.6788,
+      "track_length": 4318.9
+    },
+    {
+      "name": "Suzuka",
+      "f1_record": 90.983,
+      "best_lap": 91.5537,
+      "track_length": 5807.2
+    },
+    {
+      "name": "YasMarina",
+      "f1_record": 86.103,
+      "best_lap": 108.2681,
+      "track_length": 5549.9
+    },
+    {
+      "name": "Zandvoort",
+      "f1_record": 71.097,
+      "best_lap": 77.5977,
+      "track_length": 4320.1
+    }
+  ]
+}
