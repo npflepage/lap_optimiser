@@ -243,7 +243,7 @@ function drawTrack() {
     ctx.moveTo(T.X(xs[0]), T.Y(ys[0]));
     for (let i = 1; i < xs.length; i++) ctx.lineTo(T.X(xs[i]), T.Y(ys[i]));
     ctx.strokeStyle = col;
-    ctx.lineWidth   = lw * devicePixelRatio;
+    ctx.lineWidth   = lw * devicePixelRatio / S.zoom.scale;
     ctx.stroke();
   };
   drawPoly(B.xr, B.yr, 'rgba(255,255,255,0.30)', 1.2);
@@ -252,7 +252,7 @@ function drawTrack() {
   // Speed-coloured racing line
   const sp = sol.speed;
   const smin = Math.min(...sp), smax = Math.max(...sp);
-  ctx.lineWidth = 3.2 * devicePixelRatio;
+  ctx.lineWidth = (3.2 * devicePixelRatio) / S.zoom.scale;
   ctx.lineCap   = 'round';
   for (let i = 0; i < sol.x.length - 1; i++) {
     ctx.beginPath();
