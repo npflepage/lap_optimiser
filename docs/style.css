@@ -22,7 +22,7 @@
   --green:  #22dd66;
   --fhead: 'Orbitron', sans-serif;
   --fbody: 'Orbitron', sans-serif;
-  --fmono: 'Major Mono Display',monospace;
+  --fmono: 'Audiowide',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
